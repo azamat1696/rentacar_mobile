@@ -127,11 +127,10 @@
             width="300"
             height="200"
             color="blue"
-            lineWidth="3"
+            :lineWidth="3"
             saveAs="png"
             canvasId="customer_signature"
             v-model:image="customer_signature"
-
           />
         </q-card-section>
         <q-card-section class="row items-center q-card--bordered q-pa-none" v-show="customer_signature_preview.length > 0" style="width: 330px; height: 230px" >
@@ -166,7 +165,7 @@ export default {
   setup(){
      return {
        columns,
-       VueDrawingCanvas,
+
        imageData : ref([]),
        imageDialog : ref(false),
        imageShowSrc : ref(''),
@@ -253,6 +252,9 @@ export default {
       // this.$refs.VueCanvasDrawing.reset()
       //  console.log(this.$refs.VueCanvasDrawing.isEmpty())
     },
+  },
+  components : {
+    VueDrawingCanvas
   }
 }
 </script>
