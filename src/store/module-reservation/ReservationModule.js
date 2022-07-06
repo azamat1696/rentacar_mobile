@@ -1,5 +1,5 @@
 import { api } from "boot/axios.js"
-import {LocalStorage} from "quasar";
+import {LocalStorage, Notify} from "quasar";
 const prefixUrl = 'reservation-uploads';
 
 const state = {
@@ -68,6 +68,25 @@ const actions = {
       commit('SET_REPLACE',res.data);
     }).catch(er => {
       console.log(er)
+    })
+  },
+  sendCustomerPersonalSignature({commit},payload)
+  {
+    return api.post('customer-signature',payload).then(res => {
+       commit('SET_REPLACE',res.data)
+      Notify.create({
+        position: 'top-right',
+        type: 'positive',
+        message: 'Kayıt Başarılı'
+      })
+      return true
+    }).catch(er => {
+      Notify.create({
+        position: 'bottom-right',
+        type: 'negative',
+        message: 'Kayıt Başarısız'
+      })
+      return false
     })
   }
 

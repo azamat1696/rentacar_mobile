@@ -40,7 +40,6 @@
       </template>
 
       <template v-slot:body="props">
-
         <q-tr :props="props">
           <q-td auto-width>
             <q-btn size="sm" color="blue-grey-8"  round dense :icon="props.expand ? 'remove' : 'add'" @click="toggleExpanded(props.row.id)" />
@@ -57,7 +56,7 @@
           <q-td   colspan="100%" style="padding-left: 0!important; padding-top: 0!important;">
             <div class="bg-grey-2 q-card--bordered q-pa-xs text-subtitle2"> Araç Bilgileri: {{ props.row.BrandName }} {{props.row.ModelName}} {{props.row.Year}} ({{props.row.LicencePlate}})</div>
             <div class="bg-grey-2 q-card--bordered q-pa-xs text-subtitle2">  Telefon:  {{ props.row.CustomerPhone }} </div>
-            <div class="bg-grey-2 q-card--bordered q-pa-xs text-subtitle2"> Rezervasyon No:  #{{ props.row.id }} </div>
+            <div class="bg-grey-2 q-card--bordered q-pa-xs text-subtitle2"> Rezervasyon No:  #{{ props.row.ReservationNo }} </div>
             <div class="bg-grey-2 q-card--bordered q-pa-xs text-subtitle2"> Rezervasyon Başlama Tarihi:  {{ props.row.StartDateTime }} </div>
             <div class="bg-grey-2 q-card--bordered q-pa-xs text-subtitle2"> Rezervasyon Bitiş Tarihi:  {{props.row.EndDateTime}} </div>
             <div class="q-mt-xs">
@@ -100,10 +99,17 @@
             </div>
             <div class="q-mt-xs">
               <div class=" q-ml-xs text-subtitle2 text-bold ">Müşteri İmzası</div>
-              <q-img  :src="customer_signature_preview"     :img-style="{maxHeight:'200px'}" fit="contain"/>
+              <div><q-img  :src="props.row.CustomerSignature"   :img-style="{maxHeight:'200px'}" fit="contain"/></div>
+              <div class="text-center">
+                <q-btn color="blue-8" label="Müşteri İmzası" no-caps @click="getCustomerSignature(props.row.id,'customer')" icon="draw" class="q-mr-sm"  />
+              </div>
             </div>
-            <div>
-              <q-btn color="blue-8" label="Müşteri İmzası Al" @click="getCustomerSignature" icon="draw" class="q-mr-sm"  />
+            <div class="q-mt-xs">
+              <div class=" q-ml-xs text-subtitle2 text-bold ">Personel İmzası</div>
+              <div><q-img  :src="props.row.PersonalSignature"   :img-style="{maxHeight:'200px'}" fit="contain"/></div>
+              <div class="text-center">
+                <q-btn color="blue-8" label="Personel İmzası" no-caps @click="getCustomerSignature(props.row.id,'personnel')" icon="draw" class="q-mr-sm"  />
+              </div>
             </div>
           </q-td>
         </q-tr>
@@ -112,16 +118,17 @@
     <q-dialog v-model="imageDialog" >
            <q-img :src="imageShowSrc"/>
     </q-dialog>
-    <q-dialog v-model="customerSignatureDialog" persistent>
+
+    <q-dialog v-model="customerSignFields.customerSignatureDialog" persistent>
       <q-card  >
 
         <q-card-section class="row items-center q-pa-sm">
           <q-avatar icon="draw" color="primary" text-color="white" size="md" />
-          <span class="q-ml-sm">Müşteri Elektronik İmzası: {{customer_signature.length}}</span>
+          <span class="q-ml-sm">Müşteri Elektronik İmzası: {{customerSignFields.customer_signature.length}}</span>
           <q-space />
           <q-btn icon="close"  flat round dense color="primary" v-close-popup />
         </q-card-section>
-        <q-card-section class="row items-center q-card--bordered q-pa-none"  v-show="customer_signature_preview.length === 0" >
+        <q-card-section class="row items-center q-card--bordered q-pa-none"   >
           <vue-drawing-canvas
             ref="VueCanvasDrawing"
             width="300"
@@ -130,22 +137,49 @@
             :lineWidth="3"
             saveAs="png"
             canvasId="customer_signature"
-            v-model:image="customer_signature"
+            v-model:image="customerSignFields.customer_signature"
           />
-        </q-card-section>
-        <q-card-section class="row items-center q-card--bordered q-pa-none" v-show="customer_signature_preview.length > 0" style="width: 330px; height: 230px" >
-          <div class="text-subtitle1   col-12 text-bold text-grey-8 text-center">Mevcut Islak İmzası</div>
-          <q-img  :src="customer_signature_preview" width="300" height="300" style="border-top: 1px solid #eceaea; " />
         </q-card-section>
 
         <!--        v-close-popup-->
         <q-card-actions align="right">
-          <q-btn   label="Sil" icon="delete_outline" color="primary" @click="clearSignature" />
-          <q-btn   label="Onayla" color="blue-grey-8" icon="save"   @click="saveSignature()"   />
+          <q-btn   label="Sil" icon="delete_outline" color="primary" @click="clearSignature('customer')" />
+          <q-btn   label="Onayla" color="blue-grey-8" icon="save"   @click="saveSignature('customer')"   />
 
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="personnelSignFields.personnelSignatureDialog" persistent>
+      <q-card  >
+
+        <q-card-section class="row items-center q-pa-sm">
+          <q-avatar icon="draw" color="primary" text-color="white" size="md" />
+          <span class="q-ml-sm">Personel Elektronik İmzası: {{personnelSignFields.personnel_signature.length}}</span>
+          <q-space />
+          <q-btn icon="close"  flat round dense color="primary" v-close-popup />
+        </q-card-section>
+        <q-card-section class="row items-center q-card--bordered q-pa-none"   >
+          <vue-drawing-canvas
+            ref="VueCanvasDrawing"
+            width="300"
+            height="200"
+            color="blue"
+            :lineWidth="3"
+            saveAs="png"
+            canvasId="customer_signature"
+            v-model:image="personnelSignFields.personnel_signature"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn   label="Sil" icon="delete_outline" color="primary" @click="clearSignature('personnel')" />
+          <q-btn   label="Onayla" color="blue-grey-8" icon="save"   @click="saveSignature('personnel')"   />
+
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
   </div>
 </template>
 
@@ -156,27 +190,33 @@ import VueDrawingCanvas from 'vue-drawing-canvas';
 const columns = [
   { name: 'CustomerNameSurname', align: 'center', label: 'Ad & Soyad', field: 'CustomerNameSurname', sortable: true },
   { name: 'CustomerPhone', align: 'center', label: 'Telefon', field: 'CustomerPhone', sortable: true },
-  { name: 'LicencePlate', align: 'center', label: '', field: 'LicencePlate', sortable: true },
-  // { name: 'id', align: 'center', label: 'Rezervasyon No', field: 'id', sortable: true },
-]
+  { name: 'LicencePlate', align: 'center', label: '', field: 'LicencePlate', sortable: true },]
+
 
 export default {
   name: "Index",
   setup(){
      return {
        columns,
-
        imageData : ref([]),
        imageDialog : ref(false),
        imageShowSrc : ref(''),
-       selectedRowId : ref(''),
+       selectedRowId : ref(null),
        beforeAfterImageType : ref(''),
        baseUrl,
        filterReservation: ref(''),
        expanded: ref([]),
-       customerSignatureDialog: ref(false),
-       customer_signature : ref(''),
-       customer_signature_preview : ref(''),
+       personnelSignFields: ref({
+         personnelSignatureDialog: false,
+         personnel_signature : '',
+         personnel_signature_preview : '',
+       }),
+       customerSignFields: ref({
+         customerSignatureDialog: false,
+         customer_signature : '',
+         customer_signature_preview : '',
+       }),
+
      }
   },
   mounted() {
@@ -188,9 +228,6 @@ export default {
     }
   },
   methods : {
-    createImageUrl(image) {
-      return URL.createObjectURL(image)
-    },
     onFileChange(event){
         const files = event.target.files;
       if(!files.length)
@@ -200,17 +237,12 @@ export default {
       this.createImage(files)
     },
     createImage(files){
-
-      let stack  = []
-
      for (let i=0; i<files.length; i++)
       {
         let formData = new FormData()
         formData.append('reservation_id',this.selectedRowId)
         formData.append('type',this.beforeAfterImageType)
         formData.append('image',files[i])
-        formData.append('CustomerSignature',this.selectedRowId)
-        // formData.append('_method','PUT')
         this.$store.dispatch('ReservationModule/update',formData).then( res => {
           console.log(res)
         })
@@ -221,7 +253,7 @@ export default {
       let formData = new FormData()
       formData.append('reservation_id',id)
       formData.append('image',data)
-    this.$store.dispatch('ReservationModule/destroyImage',formData).then( res => {
+      this.$store.dispatch('ReservationModule/destroyImage',formData).then( res => {
       console.log(res);
     })
     },
@@ -239,18 +271,63 @@ export default {
     toggleExpanded(val){
       this.expanded = this.expanded[0] === val ? [] : [val]
     },
-    getCustomerSignature() {
-      this.customerSignatureDialog = true
+    getCustomerSignature(resId,type) {
+      this.selectedRowId = resId
+      if(type === 'customer')
+      {
+        this.customerSignFields.customerSignatureDialog = true
+      } else
+      {
+        this.personnelSignFields.personnelSignatureDialog = true
+      }
+
     },
-    saveSignature(){
-      this.customer_signature_preview = (this.customer_signature.length > 2106 ) ? this.customer_signature : this.customer_signature_preview
-      this.customerSignatureDialog = false
+    saveSignature(type){
+    if(type === 'customer')
+    {
+      let formData = new FormData()
+      formData.append('CustomerSignature',this.customerSignFields.customer_signature)
+      formData.append('PersonalSignature',null)
+      formData.append('reservation_id',this.selectedRowId)
+      formData.append('type','customer')
+      this.$store.dispatch('ReservationModule/sendCustomerPersonalSignature',formData).then( res => {
+        if(res === true)
+        {
+          this.customerSignFields.customerSignatureDialog = false
+          this.clearSignature('customer')
+        }
+      })
+
+    } else
+    {
+      let formData = new  FormData()
+      formData.append('PersonalSignature',this.personnelSignFields.personnel_signature)
+      formData.append('CustomerSignature',null)
+      formData.append('reservation_id',this.selectedRowId)
+      formData.append('type','personnel')
+      this.$store.dispatch('ReservationModule/sendCustomerPersonalSignature',formData).then(res => {
+        if(res === true)
+        {
+          this.personnelSignFields.personnelSignatureDialog = false
+          this.clearSignature('personnel')
+        }
+      })
+    }
     },
-    clearSignature() {
-      this.customer_signature = ''
-      this.customer_signature_preview = ''
-      // this.$refs.VueCanvasDrawing.reset()
-      //  console.log(this.$refs.VueCanvasDrawing.isEmpty())
+    clearSignature(type) {
+      if(type === 'customer')
+      {
+        this.customerSignFields.customer_signature = ''
+        this.customerSignFields.customer_signature_preview = ''
+        this.$refs.VueCanvasDrawing.reset()
+      } else
+      {
+         this.personnelSignFields.personnel_signature = ''
+         this.personnelSignFields.personnel_signature_preview = ''
+         this.$refs.VueCanvasDrawing.reset()
+      }
+
+
     },
   },
   components : {
