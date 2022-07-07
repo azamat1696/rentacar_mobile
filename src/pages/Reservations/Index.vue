@@ -97,18 +97,18 @@
                 </div>
               </div>
             </div>
-            <div class="q-mt-xs">
-              <div class=" q-ml-xs text-subtitle2 text-bold ">Müşteri İmzası</div>
+            <div class="q-mt-xs q-pa-sm justify-center" style="border-bottom: 5px solid #f5f5f5" >
+              <div class=" q-ml-xs text-subtitle2 text-bold text-center" style="border-bottom: 2px solid #1a1a1a;width: 50%;margin-left: 80px">Müşteri İmzası</div>
               <div><q-img  :src="props.row.CustomerSignature"   :img-style="{maxHeight:'200px'}" fit="contain"/></div>
               <div class="text-center">
-                <q-btn color="blue-8" label="Müşteri İmzası" no-caps @click="getCustomerSignature(props.row.id,'customer')" icon="draw" class="q-mr-sm"  />
+                <q-btn color="blue-grey-9 q-mb-lg" dense label="Müşteri İmzası" no-caps @click="getCustomerSignature(props.row.id,'customer')" icon="draw" class="q-mr-sm"  />
               </div>
             </div>
-            <div class="q-mt-xs">
-              <div class=" q-ml-xs text-subtitle2 text-bold ">Personel İmzası</div>
+            <div class="q-mt-xs q-pa-sm" style="border-bottom: 5px solid #f5f5f5">
+              <div class=" q-ml-xs text-subtitle2 text-bold text-center" style="border-bottom: 2px solid #1a1a1a;width: 50%;margin-left: 80px">Personel İmzası</div>
               <div><q-img  :src="props.row.PersonalSignature"   :img-style="{maxHeight:'200px'}" fit="contain"/></div>
               <div class="text-center">
-                <q-btn color="blue-8" label="Personel İmzası" no-caps @click="getCustomerSignature(props.row.id,'personnel')" icon="draw" class="q-mr-sm"  />
+                <q-btn color="blue-grey-9 q-mb-lg" dense label="Personel İmzası" no-caps @click="getCustomerSignature(props.row.id,'personnel')" icon="draw" class="q-mr-sm"  />
               </div>
             </div>
           </q-td>
@@ -234,6 +234,7 @@ export default {
       {
         return false;
       }
+   
       this.createImage(files)
     },
     createImage(files){
