@@ -65,15 +65,19 @@
                 <div class="col-md-3 col-sm-3 col-xs-3 cursor-pointer q-pa-xs ">
                   <input hidden multiple ref="fileInput" type="file" @change="onFileChange($event)"  :key="props.row.id" :name="props.row.id"/>
                   <div class="q-pa-sm col text-center bg-white " >
-                    <q-img src="https://img.favpng.com/22/0/8/computer-icons-icon-design-png-favpng-ixJX87JBXZmtYyTtN0ZYFcS7r.jpg" @click="choosePicture(props.row.id,'before')" :ratio="1" />
+                    <q-img src="https://img.favpng.com/22/0/8/computer-icons-icon-design-png-favpng-ixJX87JBXZmtYyTtN0ZYFcS7r.jpg" @click="choosePicture(props.row.id,'before')"  />
                   </div>
                 </div>
                 <div class="relative-position col-md-4 col-sm-4 col-xs-4 q-pa-xs"  v-for="(data,index) in JSON.parse(props.row.imagesBefore)" >
                   <q-img
                     spinner-color="red"
-                    height="73px" @click="dialogImageShow(baseUrl()+data)"  :key="index" :src="baseUrl()+data">
+                    @click="dialogImageShow(baseUrl()+data)"
+                    :key="index"
+                    :src="baseUrl()+data"
+                  style="min-height: 86px !important;"
+                  >
                   </q-img>
-                  <q-icon class="absolute-top-right text-right q-mb-md all-pointer-events " size="sm" name="close" color="white" style="border-radius: 5%" @click="removeFile(data,props.row.id)">
+                  <q-icon class="absolute-top-right text-right q-mb-md all-pointer-events" size="sm" name="close" color="white" style="border-radius: 5%" @click="removeFile(data,props.row.id)">
                   </q-icon>
                 </div>
               </div>
@@ -90,7 +94,12 @@
                 <div class="relative-position col-md-4 col-sm-4 col-xs-4 q-pa-xs"  v-for="(data,index) in JSON.parse(props.row.imagesAfter)" >
                   <q-img
                     spinner-color="red"
-                    height="70px" @click="dialogImageShow(baseUrl()+data)"   :key="index" :src="baseUrl()+data">
+                    height="70px"
+                    @click="dialogImageShow(baseUrl()+data)"
+                    :key="index"
+                    :src="baseUrl()+data"
+                    style="min-height: 86px !important;"
+                  >
                   </q-img>
                   <q-icon class="absolute-top-right text-right q-mb-md all-pointer-events " size="sm" name="close" color="white" style="border-radius: 5%" @click="removeFile(data,props.row.id)">
                   </q-icon>
@@ -234,19 +243,21 @@ export default {
       {
         return false;
       }
-   
+
       this.createImage(files)
     },
     createImage(files){
      for (let i=0; i<files.length; i++)
       {
-        let formData = new FormData()
-        formData.append('reservation_id',this.selectedRowId)
-        formData.append('type',this.beforeAfterImageType)
-        formData.append('image',files[i])
-        this.$store.dispatch('ReservationModule/update',formData).then( res => {
-          console.log(res)
-        })
+     let file = URL.createObjectURL(files[i])
+ this.downscaleImage(files[i])
+        // let formData = new FormData()
+        // formData.append('reservation_id',this.selectedRowId)
+        // formData.append('type',this.beforeAfterImageType)
+        // formData.append('image',files[i])
+        // this.$store.dispatch('ReservationModule/update',formData).then( res => {
+        //   console.log(res)
+        // })
       }
 
     },
@@ -330,6 +341,19 @@ export default {
 
 
     },
+    downscaleImage(dataUrl,newWidth,imageType,imageArguments){
+      "use strict"
+      var image, oldWidth, oldHeight, newHeight, canvas, ctx, newDataUrl
+      imageType = imageType || "image/jpeg"
+      imageArguments = imageArguments || 0.7
+
+      image = new Image();
+      image.src = dataUrl;
+      oldHeight = image.height
+      oldWidth = image.width
+      //newHeight = Math.floor()
+      console.log('>>>>',image.src)
+     }
   },
   components : {
     VueDrawingCanvas

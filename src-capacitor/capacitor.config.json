@@ -1,0 +1,7 @@
+{
+  "appId": "rentacarasistan.org.app",
+  "appName": "Quasar App",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "www"
+}

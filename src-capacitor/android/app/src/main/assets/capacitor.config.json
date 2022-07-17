@@ -1,0 +1,10 @@
+{
+  "appId": "rentacarasistan.org.app",
+  "appName": "Quasar App",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "www",
+  "server": {
+    "url": "http://192.168.88.1:9500"
+  }
+}
