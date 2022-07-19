@@ -1,4 +1,4 @@
-package rentacarasistan.org.app;
+package quasar.rentacar.app;
 
 import android.os.Bundle;
 
@@ -18,10 +18,8 @@ public class MainActivity extends BridgeActivity {
       // Ex: add(TotallyAwesomePlugin.class);
     }});
 
-    if (BuildConfig.DEBUG) {
-      EnableHttpsSelfSigned.enable(this.bridge);
-    }
-      
+              
+
               
   }
 }

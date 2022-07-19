@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-toolbar-title>
 
-          <q-img src="public/icons/index.png" width="160px"/>
+          <q-img src="./../assets/icons/index.png" width="160px"/>
         </q-toolbar-title>
 
             <q-btn-dropdown

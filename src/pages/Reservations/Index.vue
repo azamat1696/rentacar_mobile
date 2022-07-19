@@ -12,6 +12,7 @@
       class="shadow-1"
       :filter="filterReservation"
       :expanded="expanded"
+      :pagination="pagination"
 
     >
       <template v-slot:top>
@@ -206,6 +207,9 @@ export default {
   name: "Index",
   setup(){
      return {
+       pagination: {
+         rowsPerPage:10
+       },
        columns,
        imageData : ref([]),
        imageDialog : ref(false),
@@ -249,15 +253,15 @@ export default {
     createImage(files){
      for (let i=0; i<files.length; i++)
       {
-     let file = URL.createObjectURL(files[i])
- this.downscaleImage(files[i])
-        // let formData = new FormData()
-        // formData.append('reservation_id',this.selectedRowId)
-        // formData.append('type',this.beforeAfterImageType)
-        // formData.append('image',files[i])
-        // this.$store.dispatch('ReservationModule/update',formData).then( res => {
-        //   console.log(res)
-        // })
+ //     let file = URL.createObjectURL(files[i])
+ // this.downscaleImage(files[i])
+        let formData = new FormData()
+        formData.append('reservation_id',this.selectedRowId)
+        formData.append('type',this.beforeAfterImageType)
+        formData.append('image',files[i])
+        this.$store.dispatch('ReservationModule/update',formData).then( res => {
+          console.log(res)
+        })
       }
 
     },
