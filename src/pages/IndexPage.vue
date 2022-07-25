@@ -17,7 +17,7 @@
         <div class="q-card--bordered q-ma-xs" style="border-radius: 10px">
           <q-img src="./../assets/icons/settings.svg" height="150px" width="150px">
             <div class="absolute-top-left text-subtitle1 text-center bg-transparent">
-              <q-btn icon="add" rounded dense color="primary"></q-btn>
+              <q-btn icon="add" disable rounded dense color="primary"></q-btn>
             </div>
             <div class="absolute-bottom text-subtitle1 text-center bg-transparent">
               <div class="text-subtitle2 text-grey-9">Hasar Kaydı</div>

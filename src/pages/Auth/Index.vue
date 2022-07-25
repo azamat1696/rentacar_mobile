@@ -83,6 +83,9 @@ export default {
 
     }
   },
+  beforeCreate() {
+    this.$store.dispatch('AuthModule/logOut')
+  },
   created() {
     this.authLogin.email = (localStorage.getItem('loginEmail')) ?  localStorage.getItem('loginEmail') : ''
   }

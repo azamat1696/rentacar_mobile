@@ -1,6 +1,6 @@
 {
-  "appId": "quasar.rentacar.app",
-  "appName": "Quasar App",
+  "appId": "app.netuapp.com",
+  "appName": "Happywayscar Personel",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
   "webDir": "www"

@@ -9,6 +9,10 @@ yarn
 npm install
 ```
 
+### For compress img
+```bash
+npm i browser-image-compression
+```
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
 ```bash
 quasar dev

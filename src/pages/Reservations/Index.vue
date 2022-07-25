@@ -9,10 +9,11 @@
       :rows="getCurrentReservations"
       :columns="columns"
       row-key="id"
-      class="shadow-1"
+      class="shadow-1 no-box-shadow"
       :filter="filterReservation"
       :expanded="expanded"
       :pagination="pagination"
+
 
     >
       <template v-slot:top>
@@ -87,9 +88,9 @@
               <div class="text-subtitle2 bg-primary text-white q-pl-xs"  >Sonraki</div>
               <div class="row bg-grey-4 q-pa-sm q-card--bordered"  >
                 <div class="col-md-3 col-sm-3 col-xs-3 cursor-pointer q-pa-xs ">
-                  <input hidden multiple ref="fileInput" type="file" @change="onFileChange($event)"  :key="props.row.id" :name="props.row.id"/>
+                  <input hidden multiple ref="fileInput" type="file" @change="onFileChange($event)"  :key="props.row.id" :name="props.row.id" accept="image/jpeg"/>
                   <div class="q-pa-sm col text-center bg-white " >
-                    <q-img src="https://img.favpng.com/22/0/8/computer-icons-icon-design-png-favpng-ixJX87JBXZmtYyTtN0ZYFcS7r.jpg" @click="choosePicture(props.row.id,'after')" />
+                    <q-img src="https://img.favpng.com/22/0/8/computer-icons-icon-design-png-favpng-ixJX87JBXZmtYyTtN0ZYFcS7r.jpg" @click="choosePicture(props.row.id,'after')"  />
                   </div>
                 </div>
                 <div class="relative-position col-md-4 col-sm-4 col-xs-4 q-pa-xs"  v-for="(data,index) in JSON.parse(props.row.imagesAfter)" >
@@ -126,7 +127,9 @@
       </template>
     </q-table>
     <q-dialog v-model="imageDialog" >
-           <q-img :src="imageShowSrc"/>
+
+             <q-img :src="imageShowSrc" />
+
     </q-dialog>
 
     <q-dialog v-model="customerSignFields.customerSignatureDialog" persistent>
@@ -194,9 +197,12 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import {ref} from "vue"
 import {baseUrl} from "boot/baseUrl";
 import VueDrawingCanvas from 'vue-drawing-canvas';
+import imageCompression from 'browser-image-compression';
+import {Notify} from "quasar";
+
 const columns = [
   { name: 'CustomerNameSurname', align: 'center', label: 'Ad & Soyad', field: 'CustomerNameSurname', sortable: true },
   { name: 'CustomerPhone', align: 'center', label: 'Telefon', field: 'CustomerPhone', sortable: true },
@@ -242,7 +248,7 @@ export default {
   },
   methods : {
     onFileChange(event){
-        const files = event.target.files;
+     const files = event.target.files;
       if(!files.length)
       {
         return false;
@@ -250,21 +256,57 @@ export default {
 
       this.createImage(files)
     },
-    createImage(files){
-     for (let i=0; i<files.length; i++)
-      {
- //     let file = URL.createObjectURL(files[i])
- // this.downscaleImage(files[i])
-        let formData = new FormData()
-        formData.append('reservation_id',this.selectedRowId)
-        formData.append('type',this.beforeAfterImageType)
-        formData.append('image',files[i])
-        this.$store.dispatch('ReservationModule/update',formData).then( res => {
-          console.log(res)
-        })
+   async compressFiles(file) {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true
       }
-
+      return await imageCompression(file, options).then(function (compressedFile) {
+       return compressedFile
+     }).catch(function (error) {
+         Notify.create({
+           position: 'bottom-right',
+           type: 'negative',
+           message: error.message
+         })
+      })
     },
+     async  createImage(files) {
+         let formData = new FormData()
+         formData.append('reservation_id', this.selectedRowId)
+         formData.append('type', this.beforeAfterImageType)
+         for (let i = 0; i < files.length; i++) {
+           let file = await  this.compressFiles(files[i])
+           formData.append('files[]',file)
+       }
+     await this.$store.dispatch('ReservationModule/uploadImage', formData)
+
+       ///////////////////////////////////////////////////////////////////////
+
+
+       // for (let i = 0; i < files.length; i++) {
+       //   //     let file = URL.createObjectURL(files[i])
+       //   // this.downscaleImage(files[i])
+       //
+       //   let formData = new FormData()
+       //   formData.append('reservation_id', this.selectedRowId)
+       //   formData.append('type', this.beforeAfterImageType)
+       //   formData.append('image', files[i])
+       //    this.$store.dispatch('ReservationModule/uploadImage', formData).then(res => {
+       //     if (res) {
+       //       Notify.create({
+       //         position: 'top-right',
+       //         type: 'positive',
+       //         message: 'Dosya Başarıyla yüklendi'
+       //       })
+       //     }
+       //   })
+       // }
+
+
+     },
+
     removeFile(data,id){
       let formData = new FormData()
       formData.append('reservation_id',id)
@@ -345,19 +387,9 @@ export default {
 
 
     },
-    downscaleImage(dataUrl,newWidth,imageType,imageArguments){
-      "use strict"
-      var image, oldWidth, oldHeight, newHeight, canvas, ctx, newDataUrl
-      imageType = imageType || "image/jpeg"
-      imageArguments = imageArguments || 0.7
+////////////////////////////////////////
 
-      image = new Image();
-      image.src = dataUrl;
-      oldHeight = image.height
-      oldWidth = image.width
-      //newHeight = Math.floor()
-      console.log('>>>>',image.src)
-     }
+
   },
   components : {
     VueDrawingCanvas
@@ -366,5 +398,10 @@ export default {
 </script>
 
 <style scoped>
-
+.my-image {
+width: 100%;
+height: auto;
+max-width: 100%;
+max-height: 100%;
+margin: auto; }
 </style>

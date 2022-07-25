@@ -11,7 +11,7 @@ const api = axios.create({
  // baseURL: 'http://test.happywayscar.com/api/',
   baseURL: 'http://api.happywayscar.com/api/',
   headers: {
-    "Content-Type": "application/x-www-form-urlencoded,multipart/form-data",
+    "Content-Type": "multipart/form-data",
   },
 })
 export default boot(({ app }) => {

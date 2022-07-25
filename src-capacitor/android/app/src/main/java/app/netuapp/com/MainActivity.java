@@ -1,4 +1,4 @@
-package quasar.rentacar.app;
+package app.netuapp.com;
 
 import android.os.Bundle;
 
@@ -17,6 +17,14 @@ public class MainActivity extends BridgeActivity {
       // Additional plugins you've installed go here
       // Ex: add(TotallyAwesomePlugin.class);
     }});
+
+              
+
+              
+
+              
+
+              
 
               
 

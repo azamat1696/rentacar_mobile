@@ -1,5 +1,6 @@
 import { api } from "boot/axios.js"
-import {LocalStorage, Notify} from "quasar";
+import {Loading, LocalStorage, Notify} from "quasar";
+import {ErrorHandlePrint} from "app/Utils/ErrorHandle";
 const prefixUrl = 'reservation-uploads';
 
 const state = {
@@ -39,14 +40,18 @@ const actions = {
       return true
     }).catch(er => {
       console.log(er)
+      ErrorHandlePrint(er)
     })
   },
- async update({commit},payload){
+ async uploadImage({commit},payload){
+    Loading.show({message : 'Bekleyiniz...'})
     return await api.post(prefixUrl,payload).then(res => {
       commit('SET_REPLACE',res.data);
       return true
     }).catch(er => {
-      console.log(er)
+      ErrorHandlePrint(er)
+    }).finally( () => {
+      Loading.hide()
     })
   },
   get({commit}){
@@ -54,6 +59,7 @@ const actions = {
       commit('SET_ITEMS',res.data)
     }).catch(er =>{
       console.log(er)
+      ErrorHandlePrint(er)
     })
   },
   destroy({commit}, id) {
@@ -61,14 +67,17 @@ const actions = {
       commit('SET_REMOVE',id);
     }).catch(er => {
       console.log(er)
+      ErrorHandlePrint(er)
     })
   },
   destroyImage({commit}, payload) {
+    Loading.show({message : 'Bekleyiniz...'})
     return   api.post('image-remove',payload).then(res => {
       commit('SET_REPLACE',res.data);
     }).catch(er => {
       console.log(er)
-    })
+      ErrorHandlePrint(er)
+    }).finally( () => Loading.hide())
   },
   sendCustomerPersonalSignature({commit},payload)
   {
@@ -86,6 +95,7 @@ const actions = {
         type: 'negative',
         message: 'Kayıt Başarısız'
       })
+      ErrorHandlePrint(er)
       return false
     })
   }

@@ -5,7 +5,7 @@ const routes = [
     path: '/module-auth/login',
     component: () => import('layouts/AuthLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Auth/Index.vue') }
+      { path: '', name : 'login', component: () => import('pages/Auth/Index.vue') }
     ]
   },
   {

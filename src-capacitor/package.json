@@ -1,7 +1,7 @@
 {
   "name": "rentacar_mobile",
   "version": "0.0.1",
-  "description": "A Quasar Project",
+  "description": "Near East Tech. Happyways Personel app",
   "private": true,
   "dependencies": {
     "@capacitor/android": "2.5.0",
