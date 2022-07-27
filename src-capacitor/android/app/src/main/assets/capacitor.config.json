@@ -1,7 +1,10 @@
 {
-  "appId": "app.netuapp.com",
+  "appId": "happywayscar.app",
   "appName": "Happywayscar Personel",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
-  "webDir": "www"
+  "webDir": "www",
+  "server": {
+    "url": "http://192.168.144.126:9500"
+  }
 }

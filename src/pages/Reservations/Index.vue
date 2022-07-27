@@ -1,5 +1,7 @@
 <template>
-  <q-banner inline-actions rounded class="text-white q-card--bordered bg-primary" >
+ <q-banner inline-actions class="text-white bg-primary q-pt-lg platform-ios-only" >
+  </q-banner>
+  <q-banner inline-actions class="text-white bg-primary q-pt-sm" >
       <q-btn to="/" flat icon="arrow_back" color="white" />
        <span class="text-subtitle1">Güncel Rezervasyonlar</span>
   </q-banner>

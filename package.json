@@ -9,9 +9,10 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@capacitor/cli": "^3.6.0",
-    "@capacitor/core": "^3.6.0",
-    "@quasar/extras": "^1.0.0",
+    "@capacitor/app": "^1.0.0",
+    "@capacitor/cli": "^3.0.0",
+    "@capacitor/core": "^3.0.0",
+    "@capacitor/splash-screen": "^1.0.0",
     "axios": "^0.21.1",
     "browser-image-compression": "^2.0.0",
     "quasar": "^2.6.0",
