@@ -8,14 +8,14 @@
 
   <div class="q-pa-xs    ">
     <q-table
-      :rows="getCurrentReservations"
+      :rows="reservations"
       :columns="columns"
       row-key="id"
       class="shadow-1 no-box-shadow"
       :filter="filterReservation"
       :expanded="expanded"
       v-model:pagination="pagination"
-      rows-per-page-label="Sayfa "
+      @request="handleRequest"
 
 
     >
@@ -274,12 +274,36 @@ const columns = [
 export default {
   name: "Index",
   setup(){
+    const reservations = ref([])
+    const pagination = ref({
+      page: 1,
+      rowsPerPage:10,
+      rowsNumber: 10
+    })
+    const fetchData = (page = 0) => {
+      axios.get('http://api.happywayscar.com/api/test-res', {
+        params: { page: page }
+      }).then(res  => {
+        reservations.value = res.data.data
+        console.log('>>>>>>>>>>>>>',res.data.data)
 
+         pagination.value.page = res.data.current_page
+         pagination.value.rowsPerPage = res.data.per_page
+         pagination.value.rowsNumber = res.data.total
+
+      }).catch(er => {
+        console.log(er)
+      })
+    }
+    const handleRequest = (props) => {
+      fetchData(props.pagination.page);
+    }
+
+    fetchData();
      return {
-       pagination: {
-         rowsPerPage:10,
-       },
+       pagination,
        columns,
+       handleRequest,
        imageData : ref([]),
        imageDialog : ref(false),
        imageShowSrc : ref(''),
@@ -298,7 +322,7 @@ export default {
          customer_signature : '',
          customer_signature_preview : '',
        }),
-
+       reservations
 
      }
   },

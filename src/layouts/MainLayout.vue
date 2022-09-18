@@ -26,7 +26,16 @@
                 </q-item>
               </q-list>
             </q-btn-dropdown>
-
+        <q-select
+          v-model="locale"
+          :options="localeOptions"
+          dense
+          borderless
+          emit-value
+          map-options
+          options-dense
+          style="min-width: 150px"
+        />
 
       </q-toolbar>
     </q-header>
@@ -38,19 +47,18 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
-
-
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'MainLayout',
-
-  components: {
-
-  },
-
   setup () {
+    const { locale } = useI18n({ useScope: 'global' })
     return {
+      locale,
+      localeOptions: [
+        { value: 'en-US', label: 'English' },
+        { value: 'de-GR', label: 'German' }
+      ]
     }
   },
   computed: {

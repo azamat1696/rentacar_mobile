@@ -20,10 +20,11 @@
               <q-btn icon="add" disable rounded dense color="primary"></q-btn>
             </div>
             <div class="absolute-bottom text-subtitle1 text-center bg-transparent">
-              <div class="text-subtitle2 text-grey-9">Hasar Kaydı</div>
+              <div class="text-subtitle2 text-grey-9">Hasar Kaydı </div>
             </div>
           </q-img>
         </div>
+
       </div>
 
     </div>
@@ -34,7 +35,14 @@
 <script>
 import { defineComponent } from 'vue'
 
+
 export default defineComponent({
-  name: 'IndexPage'
+  name: 'IndexPage',
+  setup(){
+
+    return {
+
+    }
+  }
 })
 </script>
