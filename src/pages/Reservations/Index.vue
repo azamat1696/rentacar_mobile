@@ -3,9 +3,8 @@
   </q-banner>
   <q-banner inline-actions class="text-white bg-primary q-pt-sm" >
       <q-btn to="/" flat icon="arrow_back" color="white" />
-       <span class="text-subtitle1">Güncel Rezervasyonlar</span>
+       <span class="text-subtitle1">Güncel Rezervasyonlar </span>
   </q-banner>
-
   <div class="q-pa-xs    ">
     <q-table
       :rows="getCurrentReservations"
@@ -16,8 +15,6 @@
       :expanded="expanded"
       v-model:pagination="pagination"
       rows-per-page-label="Sayfa "
-
-
     >
       <template v-slot:top>
         <q-input
