@@ -50,7 +50,7 @@
             {{props.row.CustomerNameSurname}}
           </q-td>
           <q-td>
-            {{props.row.CustomerPhone}}
+<!--            {{props.row.CustomerPhone}}-->
           </q-td>
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
@@ -264,7 +264,7 @@ import axios from "axios";
 
 const columns = [
   { name: 'CustomerNameSurname', align: 'center', label: 'Ad & Soyad', field: 'CustomerNameSurname', sortable: true },
-  { name: 'CustomerPhone', align: 'center', label: 'Telefon', field: 'CustomerPhone', sortable: true },
+ // { name: 'CustomerPhone', align: 'center', label: 'Telefon', field: 'CustomerPhone', sortable: true },
   { name: 'LicencePlate', align: 'center', label: '', field: 'LicencePlate', sortable: true },]
 
 
