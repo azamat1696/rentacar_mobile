@@ -15,10 +15,10 @@
       :filter="filterReservation"
       :expanded="expanded"
       style="height: calc(100% - 100px); width: calc(100%)"
-      virtual-scroll
-      :virtual-scroll-item-size="20"
-      :virtual-scroll-sticky-size-start="20"
-      :pagination="pagination"
+       virtual-scroll
+      :virtual-scroll-item-size="15"
+      :virtual-scroll-sticky-size-start="40"
+      :pagination.sync="pagination"
       :rows-per-page-options="[0]"
       hide-bottom
     >
@@ -325,6 +325,7 @@ export default {
       })
     },
      async  createImage(files) {
+
          let formData = new FormData()
          formData.append('reservation_id', this.selectedRowId)
          formData.append('type', this.beforeAfterImageType)

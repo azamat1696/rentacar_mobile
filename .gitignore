@@ -1,7 +1,10 @@
 .DS_Store
 .thumbs.db
 node_modules
-
+dist
+.vscode
+ios
+src-capacitor
 # Quasar core related directories
 .quasar
 /dist
