@@ -55,11 +55,16 @@ const actions = {
     })
   },
   get({commit}){
+    Loading.show({
+      message: 'Yükleniyor ...'
+    })
     api.get('current-reservations').then(res => {
       commit('SET_ITEMS',res.data)
     }).catch(er =>{
       console.log(er)
       ErrorHandlePrint(er)
+    }).finally( () => {
+      Loading.hide()
     })
   },
   destroy({commit}, id) {

@@ -3,18 +3,21 @@
   </q-banner>
   <q-banner inline-actions class="text-white bg-primary q-pt-sm" >
       <q-btn to="/" flat icon="arrow_back" color="white" />
-       <span class="text-subtitle1">Güncel Rezervasyonlar </span>
+       <span class="text-subtitle1">Güncel Rezervasyonlar</span>
   </q-banner>
+
   <div class="q-pa-xs    ">
     <q-table
-      :rows="getCurrentReservations"
+      :rows="reservations"
       :columns="columns"
       row-key="id"
       class="shadow-1 no-box-shadow"
       :filter="filterReservation"
       :expanded="expanded"
       v-model:pagination="pagination"
-      rows-per-page-label="Sayfa "
+      @request="handleRequest"
+
+
     >
       <template v-slot:top>
         <q-input
@@ -50,7 +53,7 @@
             {{props.row.CustomerNameSurname}}
           </q-td>
           <q-td>
-<!--            {{props.row.CustomerPhone}}-->
+            {{props.row.CustomerPhone}}
           </q-td>
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
@@ -264,19 +267,43 @@ import axios from "axios";
 
 const columns = [
   { name: 'CustomerNameSurname', align: 'center', label: 'Ad & Soyad', field: 'CustomerNameSurname', sortable: true },
- // { name: 'CustomerPhone', align: 'center', label: 'Telefon', field: 'CustomerPhone', sortable: true },
+  { name: 'CustomerPhone', align: 'center', label: 'Telefon', field: 'CustomerPhone', sortable: true },
   { name: 'LicencePlate', align: 'center', label: '', field: 'LicencePlate', sortable: true },]
 
 
 export default {
   name: "Index",
   setup(){
+    const reservations = ref([])
+    const pagination = ref({
+      page: 1,
+      rowsPerPage:10,
+      rowsNumber: 10
+    })
+    const fetchData = (page = 0) => {
+      axios.get('http://api.happywayscar.com/api/test-res', {
+        params: { page: page }
+      }).then(res  => {
+        reservations.value = res.data.data
+        console.log('>>>>>>>>>>>>>',res.data.data)
 
+         pagination.value.page = res.data.current_page
+         pagination.value.rowsPerPage = res.data.per_page
+         pagination.value.rowsNumber = res.data.total
+
+      }).catch(er => {
+        console.log(er)
+      })
+    }
+    const handleRequest = (props) => {
+      fetchData(props.pagination.page);
+    }
+
+    fetchData();
      return {
-       pagination: {
-         rowsPerPage:10,
-       },
+       pagination,
        columns,
+       handleRequest,
        imageData : ref([]),
        imageDialog : ref(false),
        imageShowSrc : ref(''),
@@ -295,7 +322,7 @@ export default {
          customer_signature : '',
          customer_signature_preview : '',
        }),
-
+       reservations
 
      }
   },

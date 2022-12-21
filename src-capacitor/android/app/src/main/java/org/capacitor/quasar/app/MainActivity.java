@@ -1,4 +1,4 @@
-package happywayscar.app;
+package org.capacitor.quasar.app;
 
 import android.os.Bundle;
 
@@ -17,11 +17,5 @@ public class MainActivity extends BridgeActivity {
       // Additional plugins you've installed go here
       // Ex: add(TotallyAwesomePlugin.class);
     }});
-
-    if (BuildConfig.DEBUG) {
-      EnableHttpsSelfSigned.enable(this.bridge);
-    }
-      
-              
   }
 }
