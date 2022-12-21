@@ -25,7 +25,14 @@ const routes = [
       { path: '', name: 'ReservationPage', component: () => import('pages/Reservations/Index.vue') },
     ]
   },
-
+  {
+    path: '/pagination',
+    component: () => import('layouts/ReservationLayout.vue'),
+    meta: { requiresAuth : true },
+    children: [
+      { path: '', name: 'PaginationPage', component: () => import('pages/Reservations/ExamplePagination.vue') },
+    ]
+  },
 
 
   // Always leave this as last one,

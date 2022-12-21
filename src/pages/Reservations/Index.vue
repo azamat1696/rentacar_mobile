@@ -5,16 +5,22 @@
       <q-btn to="/" flat icon="arrow_back" color="white" />
        <span class="text-subtitle1">Güncel Rezervasyonlar </span>
   </q-banner>
-  <div class="q-pa-xs    ">
+  <div class="q-pa-xs">
     <q-table
+      table-style="overflow-y:hidden"
+      class="shadow-1 no-box-shadow my-sticky-header-table"
       :rows="getCurrentReservations"
       :columns="columns"
-      row-key="id"
-      class="shadow-1 no-box-shadow"
+       row-key="id"
       :filter="filterReservation"
       :expanded="expanded"
-      v-model:pagination="pagination"
-      rows-per-page-label="Sayfa "
+      style="height: calc(100% - 100px); width: calc(100%)"
+      virtual-scroll
+      :virtual-scroll-item-size="20"
+      :virtual-scroll-sticky-size-start="20"
+      :pagination="pagination"
+      :rows-per-page-options="[0]"
+      hide-bottom
     >
       <template v-slot:top>
         <q-input
@@ -22,11 +28,13 @@
           :input-style="{minWidth:'100%'}"
           dense
           outlined placeholder="Arama yapınız..."  v-model="filterReservation"
+          clearable
         >
           <template v-slot:append>
             <q-icon name="search" />
           </template>
         </q-input>
+
       </template>
       <template v-slot:header="props">
         <q-tr :props="props">
@@ -47,16 +55,15 @@
             <q-btn size="sm" color="blue-grey-8"  round dense :icon="props.expand ? 'remove' : 'add'" @click="toggleExpanded(props.row.id)" />
           </q-td>
           <q-td>
-            {{props.row.CustomerNameSurname}}
-          </q-td>
-          <q-td>
-<!--            {{props.row.CustomerPhone}}-->
+
+            <span class="text-subtitle2 truncate">{{ truncate( '('+ props.row.LicencePlate +')'+' '+props.row.CustomerNameSurname,35,'...')}}</span>
           </q-td>
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
 
           <q-td   colspan="100%" style="padding-left: 0!important; padding-top: 0!important;">
 
+            <div class="bg-grey-2 q-card--bordered q-pa-xs text-subtitle2"> Ad & Soyad: {{props.row.CustomerNameSurname}}</div>
             <div class="bg-grey-2 q-card--bordered q-pa-xs text-subtitle2"> Araç Bilgileri: {{ props.row.BrandName }} {{props.row.ModelName}} {{props.row.Year}} ({{props.row.LicencePlate}})</div>
             <div class="bg-grey-2 q-card--bordered q-pa-xs text-subtitle2">  Telefon:  {{ props.row.CustomerPhone }} </div>
             <div class="bg-grey-2 q-card--bordered q-pa-xs text-subtitle2"> Rezervasyon No:  #{{ props.row.ReservationNo }} </div>
@@ -165,20 +172,6 @@
 
               </div>
             </div>
-<!--            <div class="q-mt-xs q-pa-sm justify justify-center" style="border-bottom: 5px solid #f5f5f5" >-->
-<!--              <div class=" q-ml-xs text-subtitle2 text-bold text-center" style="border-bottom: 2px solid #1a1a1a;width: 50%;margin-left: 80px">Müşteri İmzası</div>-->
-<!--              <div><q-img  :src="props.row.CustomerSignature"   :img-style="{maxHeight:'200px'}" fit="contain"/></div>-->
-<!--              <div class="text-center">-->
-<!--                <q-btn color="blue-grey-9 q-mb-lg" dense label="Müşteri İmzası" no-caps @click="getCustomerSignature(props.row.id,'customer')" icon="draw" class="q-mr-sm"  />-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div class="q-mt-xs q-pa-sm" style="border-bottom: 5px solid #f5f5f5">-->
-<!--              <div class=" q-ml-xs text-subtitle2 text-bold text-center" style="border-bottom: 2px solid #1a1a1a;width: 50%;margin-left: 80px">Personel İmzası</div>-->
-<!--              <div><q-img  :src="props.row.PersonalSignature"   :img-style="{maxHeight:'200px'}" fit="contain"/></div>-->
-<!--              <div class="text-center">-->
-<!--                <q-btn color="blue-grey-9 q-mb-lg" dense label="Personel İmzası" no-caps @click="getCustomerSignature(props.row.id,'personnel')" icon="draw" class="q-mr-sm"  />-->
-<!--              </div>-->
-<!--            </div>-->
           </q-td>
         </q-tr>
       </template>
@@ -255,17 +248,15 @@
 </template>
 
 <script>
-import {ref} from "vue"
+import {ref,computed,nextTick} from "vue"
 import {baseUrl} from "boot/baseUrl";
 import VueDrawingCanvas from 'vue-drawing-canvas';
 import imageCompression from 'browser-image-compression';
 import {Notify} from "quasar";
-import axios from "axios";
-
 const columns = [
   { name: 'CustomerNameSurname', align: 'center', label: 'Ad & Soyad', field: 'CustomerNameSurname', sortable: true },
- // { name: 'CustomerPhone', align: 'center', label: 'Telefon', field: 'CustomerPhone', sortable: true },
-  { name: 'LicencePlate', align: 'center', label: '', field: 'LicencePlate', sortable: true },]
+  { name: 'LicencePlate', field: 'LicencePlate', headerClasses: 'mobile-hide' }
+]
 
 
 export default {
@@ -274,7 +265,7 @@ export default {
 
      return {
        pagination: {
-         rowsPerPage:10,
+         rowsPerPage:0,
        },
        columns,
        imageData : ref([]),
@@ -342,30 +333,6 @@ export default {
            formData.append('files[]',file)
        }
      await this.$store.dispatch('ReservationModule/uploadImage', formData)
-
-       ///////////////////////////////////////////////////////////////////////
-
-
-       // for (let i = 0; i < files.length; i++) {
-       //   //     let file = URL.createObjectURL(files[i])
-       //   // this.downscaleImage(files[i])
-       //
-       //   let formData = new FormData()
-       //   formData.append('reservation_id', this.selectedRowId)
-       //   formData.append('type', this.beforeAfterImageType)
-       //   formData.append('image', files[i])
-       //    this.$store.dispatch('ReservationModule/uploadImage', formData).then(res => {
-       //     if (res) {
-       //       Notify.create({
-       //         position: 'top-right',
-       //         type: 'positive',
-       //         message: 'Dosya Başarıyla yüklendi'
-       //       })
-       //     }
-       //   })
-       // }
-
-
      },
 
     removeFile(data,id){
@@ -449,12 +416,20 @@ export default {
 
     },
 ////////////////////////////////////////
-
+    truncate (text,length,suffix) {
+       if (text.length > length)
+      {
+        return text.substring(0,length) + suffix;
+      } else {
+        return text;
+      }
+    },
 
   },
   components : {
     VueDrawingCanvas
-  }
+  },
+
 }
 </script>
 
@@ -465,4 +440,10 @@ height: auto;
 max-width: 100%;
 max-height: 100%;
 margin: auto; }
+.truncate {
+  width: 500px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 </style>

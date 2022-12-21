@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated >
       <q-toolbar>
         <q-toolbar-title>
 
@@ -26,16 +26,16 @@
                 </q-item>
               </q-list>
             </q-btn-dropdown>
-        <q-select
-          v-model="locale"
-          :options="localeOptions"
-          dense
-          borderless
-          emit-value
-          map-options
-          options-dense
-          style="min-width: 150px"
-        />
+<!--        <q-select-->
+<!--          v-model="locale"-->
+<!--          :options="localeOptions"-->
+<!--          dense-->
+<!--          borderless-->
+<!--          emit-value-->
+<!--          map-options-->
+<!--          options-dense-->
+<!--          style="min-width: 150px"-->
+<!--        />-->
 
       </q-toolbar>
     </q-header>
@@ -65,6 +65,9 @@ export default defineComponent({
     userDetail(){
       return this.$store.getters['AuthModule/userDetailGetter']
     }
-  }
+  },
+  mounted() {
+    this.$store.dispatch('ReservationModule/get')
+  },
 })
 </script>

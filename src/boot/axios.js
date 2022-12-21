@@ -9,7 +9,7 @@ import axios from 'axios'
 // for each client)
 const api = axios.create({
  // baseURL: 'http://test.happywayscar.com/api/',
-  baseURL: 'http://api.happywayscar.com/api/',
+  baseURL: 'http://api.happywayscar.com/api/mobile/',
   headers: {
     "Content-Type": "multipart/form-data",
   },
