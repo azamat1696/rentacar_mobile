@@ -1,7 +1,0 @@
-{
-  "appId": "happywayscar.app",
-  "appName": "Happywayscar Personel",
-  "bundledWebRuntime": false,
-  "npmClient": "yarn",
-  "webDir": "www"
-}
