@@ -1,5 +1,5 @@
 <template>
-  <q-page >
+  <q-page class="" style="display: flex; flex-direction: column; justify-content: space-between">
     <div class="row q-pa-sm">
       <div class="col-xs-6">
         <div class="q-card--bordered q-ma-xs" style="border-radius: 10px" >
@@ -28,7 +28,9 @@
       </div>
 
     </div>
-
+    <div class="row flex-center q-mb-lg">
+      <q-btn icon="sync" color="primary" class="q-pa-ms" no-caps @click="this.$store.dispatch('ReservationModule/get')"> Yenile </q-btn>
+    </div>
   </q-page>
 </template>
 

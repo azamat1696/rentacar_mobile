@@ -30,6 +30,7 @@ const actions = {
 
     return  api.post('auth-login',loginData).then(res => {
       // WHEN SUCCESSFULLY
+
       api.defaults.headers.common['Authorization'] = 'Bearer '+res.data.token;
       commit('setToken',res.data.token);
       commit('setUserDetail',res.data.userDetail);
@@ -38,10 +39,6 @@ const actions = {
       localStorage.setItem('userDetail',JSON.stringify(res.data.userDetail));
       localStorage.setItem('loginEmail',payload.email)
 
-      // const  time = new Date().getTime();
-      // localStorage.setItem('expirationDate', time  + res.data.expiresIn*1000000 );
-      //
-      // dispatch('setTimeoutTimer',res.data.expiresIn);
 
       Notify.create({
         color : 'positive',
@@ -52,8 +49,8 @@ const actions = {
         icon : 'done'
       });
 
-      this.$router.push(('/')).catch(er => {
-        console.log("Error On login:======>",er)})
+      this.$router.push(('/'))
+      return true
     }).catch(er => {
       console.log(er.message)
       Notify.create({
@@ -64,8 +61,6 @@ const actions = {
         message : 'Sistem Hatası : '+er.message,
         icon : 'done'
       })
-    }).finally(fi => {
-      console.log("Finally----")
     })
   },
   logOut({commit}) {

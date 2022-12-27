@@ -77,7 +77,10 @@ export default {
   methods : {
     loginFormOnSubmit() {
       this.showLoading()
-      this.$store.dispatch('AuthModule/login',this.authLogin).then( () => {
+      this.$store.dispatch('AuthModule/login',this.authLogin).then( (res) => {
+         if(res){
+           this.$store.dispatch('ReservationModule/get')
+         }
         this.closeLoading()
       })
 
