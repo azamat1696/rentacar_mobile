@@ -7,20 +7,16 @@
   </q-banner>
   <div class="q-pa-xs">
     <q-table
-      table-style="overflow-y:hidden"
       class="shadow-1 no-box-shadow my-sticky-header-table"
       :rows="getCurrentReservations"
       :columns="columns"
        row-key="id"
       :filter="filterReservation"
       :expanded="expanded"
-      style="height: calc(100% - 100px); width: calc(100%)"
-       virtual-scroll
-      :virtual-scroll-item-size="15"
-      :virtual-scroll-sticky-size-start="40"
-      :pagination.sync="pagination"
-      :rows-per-page-options="[0]"
-      hide-bottom
+      virtual-scroll
+      style="height: calc(100%); width: calc(100%)"
+      v-model:pagination="pagination"
+      rows-per-page-label="Sayfa"
     >
       <template v-slot:top>
         <q-input
@@ -264,9 +260,9 @@ export default {
   setup(){
 
      return {
-       pagination: {
-         rowsPerPage:0,
-       },
+       pagination: ref({
+         rowsPerPage: 11
+       }),
        columns,
        imageData : ref([]),
        imageDialog : ref(false),
@@ -289,9 +285,6 @@ export default {
 
 
      }
-  },
-  mounted() {
-    this.$store.dispatch('ReservationModule/get')
   },
   computed: {
     getCurrentReservations(){

@@ -66,8 +66,6 @@ export default defineComponent({
       return this.$store.getters['AuthModule/userDetailGetter']
     }
   },
-  mounted() {
-    this.$store.dispatch('ReservationModule/get')
-  },
+
 })
 </script>
