@@ -23,7 +23,7 @@
     "vue-i18n": "^9.2.0",
     "vue-pinch-zoom": "^1.0.1",
     "vue-router": "^4.0.0",
-    "vuex": "^4.0.1"
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@intlify/vite-plugin-vue-i18n": "^3.3.1",
