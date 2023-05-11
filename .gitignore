@@ -3,8 +3,8 @@
 node_modules
 dist
 .vscode
-ios
-src-capacitor
+/ios
+/src-capacitor
 # Quasar core related directories
 .quasar
 /dist
