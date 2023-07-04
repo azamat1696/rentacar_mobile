@@ -150,7 +150,6 @@
                   <q-btn
                     color="primary"
                     dense
-
                     no-caps
                     @click="getCustomerSignature(props.row.id,'personnel')"
                     icon="draw"

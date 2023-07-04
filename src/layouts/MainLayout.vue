@@ -21,7 +21,7 @@
                 </q-item>
                 <q-item clickable v-close-popup dense @click="this.$store.dispatch('AuthModule/logOut')">
                   <q-item-section>
-                    <q-item-label class="text-center"><q-icon name="logout" size="xs" />  Logout </q-item-label>
+                    <q-item-label class="text-center"><q-icon name="logout" size="xs" />  Çıkış yap </q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>

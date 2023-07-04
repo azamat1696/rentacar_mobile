@@ -285,8 +285,6 @@ export default {
         params: { page: page }
       }).then(res  => {
         reservations.value = res.data.data
-        console.log('>>>>>>>>>>>>>',res.data.data)
-
          pagination.value.page = res.data.current_page
          pagination.value.rowsPerPage = res.data.per_page
          pagination.value.rowsNumber = res.data.total

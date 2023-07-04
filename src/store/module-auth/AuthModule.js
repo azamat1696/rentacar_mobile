@@ -52,14 +52,13 @@ const actions = {
       this.$router.push(('/'))
       return true
     }).catch(er => {
-      console.log(er.message)
       Notify.create({
         color : 'negative',
         position : 'center',
         progress : true,
-        timeout : 1500,
-        message : 'Sistem Hatası : '+er.message,
-        icon : 'done'
+        timeout : 9500,
+        message : JSON.stringify(er.response.data.message),
+        icon : 'error'
       })
     })
   },

@@ -1,8 +1,8 @@
 {
-  "name": "rentacar_mobile",
+  "name": "happyways_personel",
   "version": "0.0.1",
   "description": "Near East Tech. Happyways Personel app",
-  "productName": "Happywayscar Personel",
+  "productName": "happyways_personel",
   "author": "",
   "private": true,
   "scripts": {
@@ -10,8 +10,7 @@
   },
   "dependencies": {
     "@capacitor/app": "^1.0.0",
-    "@capacitor/cli": "^3.0.0",
-    "@capacitor/core": "^3.0.0",
+    "@capacitor/core": "^3.9.0",
     "@capacitor/splash-screen": "^1.0.0",
     "@quasar/extras": "^1.15.1",
     "axios": "^0.21.1",
@@ -26,6 +25,7 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
+    "@capacitor/cli": "^5.0.3",
     "@intlify/vite-plugin-vue-i18n": "^3.3.1",
     "@intlify/vue-i18n-loader": "^4.2.0",
     "@quasar/app-vite": "^1.0.0",

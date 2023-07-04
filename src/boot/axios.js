@@ -9,9 +9,10 @@ import axios from 'axios'
 // for each client)
 const api = axios.create({
  // baseURL: 'http://test.happywayscar.com/api/',
-  baseURL: 'http://api.happywayscar.com/api/mobile/',
+  baseURL: 'https://api.happywayscar.com/api/mobile/',
   headers: {
-    "Content-Type": "multipart/form-data",
+    'Access-Control-Allow-Origin': '*',
+     "Content-Type": "multipart/form-data",
   },
 })
 export default boot(({ app }) => {

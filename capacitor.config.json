@@ -1,6 +1,6 @@
 {
-  "appId": "happywayscar.personel.mobile",
-  "appName": "happywayscar_personel",
+  "appId": "happywayscar.personel.app",
+  "appName": "Happyways Personel",
   "webDir": "www",
   "bundledWebRuntime": false
 }
